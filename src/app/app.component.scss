@@ -1,0 +1,24 @@
+.header{
+    height: 75px;
+    width: 100%;
+    background-color: #272323;
+    color: #ffffff;
+    .main-title{
+        display: inline-block;
+        font-size: 24px;
+        font-family: fantasy;
+        margin-top: 22px;
+        margin-left: 45px;
+    }
+    .div-right-options{
+        float: right;
+        display: inline-block;
+        .div-logout{
+            i{
+                margin: 25px 15px 0 0;
+                font-size: 23px;
+                cursor: pointer;
+            }
+        }
+    }
+}

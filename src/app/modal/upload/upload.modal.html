@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ data._id ? 'Edit' : 'Add' }} Movie</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-item">
+      <div class="label">Movie Name:</div> <input [value]="data.movie_name" (input)="set($event, 'movie_name')">
+    </div>
+    <div class="modal-item">
+      <div class="label">Director:</div> <input [value]="data.director" (input)="set($event, 'director')">
+    </div>
+    <div class="modal-item">
+      <div class="label">Genre:</div> <input [value]="data.genre" (input)="set($event, 'genre')">
+    </div>
+    <div class="modal-item">
+      <div class="label">Language(s):</div> <span>{{data.lang.join("/ ")}}</span>
+      <div class="div-lang">
+        <div class="btn-group btn-group-toggle">
+          <label class="btn-primary" ngbButtonLabel>
+            <input type="checkbox" [checked]="lang.English" ngbButton (change)="setLang($event, 'English')"> English
+          </label>
+          <label class="btn-primary" ngbButtonLabel>
+            <input type="checkbox" [checked]="lang.Tamil" ngbButton (change)="setLang($event, 'Tamil')"> Tamil
+          </label>
+          <label class="btn-primary" ngbButtonLabel>
+            <input type="checkbox" [checked]="lang.French" ngbButton (change)="setLang($event, 'French')"> French
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-item">
+      <div class="label">Release Date:</div> <input type="date" [value]="data.rdate" (change)="setReleaseDate($event)">
+    </div>
+    <div class="modal-item">
+      <div class="label">Poster Image:</div> <input type="file" (change)="fileChangeEvent($event)" #posterimg>
+    </div>
+    <div class="modal-item">
+      <div class="div-poster">
+        <img [src]="data.poster_img" alt="" (error)="imgErr($event)">
+    </div>
+    </div>
+    <div class="modal-item">
+      <div class="label">Plot:</div> <textarea cols="30" rows="5" (input)="set($event, 'plot')"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark btn-save" (click)="save()">Save</button>
+    <button type="button" [hidden]="!data._id" class="btn btn-outline-dark btn-delete danger" (click)="delete()">Delete</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
