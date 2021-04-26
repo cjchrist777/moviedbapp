@@ -36,7 +36,7 @@
           <div class="rating">
             <ngb-rating [(rate)]="m.rate" (rateChange)="setRating($event, m)"></ngb-rating>&nbsp;{{ m.rating_count }}
           </div>
-          <div class="edit" (click)="openUploadModal(m)">
+          <div class="edit" (click)="openUploadModal(m)" *ngIf="!c.guest">
             <i class="fas fa-edit"></i>
           </div>
         </div>
