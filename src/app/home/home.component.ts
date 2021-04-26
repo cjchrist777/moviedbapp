@@ -118,9 +118,11 @@ pageSize: any = 8;
     
     if(attr == 'release_date' || attr == 'created_date'){
       this.movies = _.sortBy(this.movies, attr).reverse()
+      this.constantmovies = _.sortBy(this.constantmovies, attr).reverse()
     }
     else{
       this.movies = _.sortBy(this.movies, attr)
+      this.constantmovies = _.sortBy(this.constantmovies, attr)
     }
     this.pageChange(1);
   }
