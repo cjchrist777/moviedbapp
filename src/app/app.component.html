@@ -1,9 +1,12 @@
 <div class="header">
-  <div class="main-title">
+  <div class="main-title" (click)="dashboard()">
     Movie DB App
   </div>
-  <div class="div-right-options">
-    <div class="div-logout">
+  <div class="div-right-options" *ngIf="c.headeroptions">
+    <div class="div-login" *ngIf="!c.token" title="Login" (click)="login()">
+      <i class="fas fa-sign-in-alt"></i>
+    </div>
+    <div class="div-logout" *ngIf="!c.guest && c.token" title="Logout" (click)="logout()">
       <i class="fas fa-sign-out-alt"></i>
     </div>
   </div>

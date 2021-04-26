@@ -38,11 +38,11 @@
     </div>
     <div class="modal-item">
       <div class="div-poster">
-        <img [src]="data.poster_img" alt="" (error)="imgErr($event)">
+        <img [src]="src || (c.server+'filesystem/'+data.poster_img)" alt="" (error)="imgErr($event)">
     </div>
     </div>
     <div class="modal-item">
-      <div class="label">Plot:</div> <textarea cols="30" rows="5" (input)="set($event, 'plot')"></textarea>
+      <div class="label">Plot:</div> <textarea cols="30" rows="5" [value]="data.plot" (input)="set($event, 'plot')"></textarea>
     </div>
   </div>
   <div class="modal-footer">

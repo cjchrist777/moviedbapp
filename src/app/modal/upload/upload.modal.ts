@@ -15,7 +15,8 @@ import { CommonService } from '../../service/common.service';
       English: false,
       Tamil: false,
       French: false
-    }
+    };
+    src: any = '';
     file: any;
     constructor(public activeModal: NgbActiveModal, public c: CommonService) {}
 
@@ -31,9 +32,17 @@ import { CommonService } from '../../service/common.service';
           this.lang[l]=true;
         })
         if(this.data.release_date){
+          let month: any = (this.c.getMonth(this.data.release_date)+1).toString();
+          if(month.length === 1){
+            month = '0'+month
+          }
+          let date: any = (this.c.getDate(this.data.release_date)).toString();
+          if(date.length === 1){
+            date = '0'+date
+          }
           this.data.rdate = this.c.getFullYear(this.data.release_date) + '-'
-          + (this.c.getMonth(this.data.release_date)+1) + '-'
-          + this.c.getDate(this.data.release_date);
+          + month + '-'
+          + date;
           console.log('rdate', this.data.rdate)
         }
       }
@@ -62,7 +71,7 @@ import { CommonService } from '../../service/common.service';
           this.file = file;
           var reader  = new FileReader();
           reader.addEventListener("load",  () => {
-            this.data.poster_img = reader.result;
+            this.src = reader.result;
           }, false);
         
           if (file) {
@@ -84,73 +93,109 @@ import { CommonService } from '../../service/common.service';
       e.target.src = 'assets/default_movie.webp'
     }
 
+    isValid(){
+      if(this.data.movie_name.trim()){
+        return true
+      }
+      return false;
+    }
+
     async save(){
       console.log(this.data)
-      let saveData: any = this.data;
-      saveData = JSON.parse(JSON.stringify(saveData));
-      if(this.data._id){
-        saveData['updated_date'] = Date.now();
+      if(!this.isValid()){
+        alert('Provide movie name before saving')
+        return;
       }
-      else{
-        saveData['created_date'] = Date.now();
-      }
-
-      delete saveData.rdate;
-      delete saveData.rate;
-      try{
-        const metadataresponse = await this.c.postCall('save-movie', { info: saveData });
-
-        const metadata: any = await metadataresponse
-        console.log(metadata);
-
-        if(metadata.success){
-          if(this.file){
-            let _id = this.data._id ? this.data._id : metadata.data.value._id;
-            let formData = new FormData();
-            formData.append('filepath', './'+_id+'/');
-            formData.append('file', this.file, this.file.name);
+      if(confirm('Are you sure you want to SAVE this movie?')){
+        let saveData: any = this.data;
+        saveData = JSON.parse(JSON.stringify(saveData));
+        if(this.data._id){
+          saveData['updated_date'] = Date.now();
+        }
+        else{
+          saveData['created_date'] = Date.now();
+        }
   
-            const response = await this.c.postCall('upload-poster', formData);
+        delete saveData.rdate;
+        delete saveData.rate;
+        console.log(saveData)
+        try{
+          const metadataresponse = await this.c.postCall('save-movie', { info: saveData });
   
-            const data: any = await response
-            console.log(data);
+          const metadata: any = await metadataresponse
+          console.log(metadata);
   
-            if(data.success){
-              saveData['poster_img'] = _id + '/' + this.file.name;
-              const postimginforesponse = await this.c.postCall('save-movie', saveData);
-
-              const postimginfo: any = await postimginforesponse
-              console.log(postimginfo);
-              if(postimginfo.success){
-                this.activeModal.close('Saved')
+          if(metadata.success){
+            if(this.file){
+              let _id = this.data._id ? this.data._id : metadata.data.value._id;
+              let formData = new FormData();
+              formData.append('filepath', './'+_id+'/');
+              formData.append('file', this.file, this.file.name);
+    
+              const response = await this.c.postCall('upload-poster', formData);
+    
+              const data: any = await response
+              console.log(data);
+    
+              if(data.success){
+                saveData['poster_img'] = _id + '/' + this.file.name;
+                console.log(saveData);
+                if(!this.data._id && metadata.data.value._id){
+                  saveData['_id'] = metadata.data.value._id
+                }
+                const postimginforesponse = await this.c.postCall('save-movie', { info: saveData });
+  
+                const postimginfo: any = await postimginforesponse
+                console.log(postimginfo);
+                if(postimginfo.success){
+                  this.activeModal.close('Saved')
+                }
+                else{
+                  console.log('Postimginfo Save was unsuccessful');
+                }
               }
               else{
-                console.log('Postimginfo Save was unsuccessful');
+                console.log('File Save was unsuccessful');
               }
             }
             else{
-              console.log('File Save was unsuccessful');
+              console.log('Metadata Save was Successful');
+              this.activeModal.close('Saved')
             }
           }
           else{
-            console.log('Metadata Save was Successful');
+            console.log('Metadata Save was unsuccessful');
+          }
+        }
+        catch(e){
+          console.log(e)
+        }
+      }
+    }
+
+    async delete(){
+      if(confirm('Are you sure you want to DELETE this movie?')){
+        console.log(this.data)
+        let deleteData: any = this.data;
+        deleteData = JSON.parse(JSON.stringify(deleteData));
+        deleteData['deleted'] = 'Y';
+        console.log(deleteData)
+        try{
+          const metadataresponse = await this.c.postCall('save-movie', { info: deleteData });
+  
+          const metadata: any = await metadataresponse
+          console.log(metadata);
+  
+          if(metadata.success){
+            console.log('Metadata for deletion Save was Successful');
             this.activeModal.close('Saved')
           }
         }
-        else{
-          console.log('Metadata Save was unsuccessful');
+        catch(e){
+          console.log(e)
         }
       }
-      catch(e){
-        console.log(e)
-      }
       
-    }
-
-    delete(){
-      console.log(this.data)
-      let saveData: any = this.data;
-      saveData = JSON.parse(JSON.stringify(saveData));
     }
 
     set(e: any, attr: any){

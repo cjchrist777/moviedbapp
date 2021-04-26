@@ -5,6 +5,10 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class CommonService {
   months: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  server: any = 'http://localhost:3000/';
+  guest: any;
+  headeroptions: any = true;
+  token: any = localStorage.token;
   constructor(
     private router: Router,
     public _http: HttpClient
@@ -12,7 +16,7 @@ export class CommonService {
 
   postCall(url: any, obj: any) {
     return new Promise((resolve, reject) => {
-        this._http.post('http://localhost:3000/' + url, obj)
+        this._http.post(this.server + url, obj)
         .subscribe((data: any) => {
           console.log('HTTP Response')
           console.log(data)

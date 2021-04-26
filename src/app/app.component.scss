@@ -9,11 +9,12 @@
         font-family: fantasy;
         margin-top: 22px;
         margin-left: 45px;
+        cursor: pointer;
     }
     .div-right-options{
         float: right;
         display: inline-block;
-        .div-logout{
+        .div-logout, .div-login{
             i{
                 margin: 25px 15px 0 0;
                 font-size: 23px;

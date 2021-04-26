@@ -1,0 +1,29 @@
+.div-login-container{
+    background-color: #4ca04c;
+    width: 100%;
+    height: 100%;
+}
+.div-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    width: 100%;
+    .item{
+        margin-bottom: 10px;
+        .label{
+            font-weight: bold;
+        }
+        .input{
+            margin-top: 5px;
+        }
+    }
+    .div-btn{
+        padding-top: 10px;
+        width: 100%;
+        button{
+            width: 100%;
+        }
+    }
+
+}

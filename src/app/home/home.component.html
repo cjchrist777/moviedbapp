@@ -1,12 +1,26 @@
 <div class="home-container">
-  <div class="div-add">
+  <div class="div-search">
+    <input type="search" placeholder="Search movies..." (input)="searchFilter($event)">
+  </div>
+  <div class="div-sort">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-secondary" id="dropdownBasic1" ngbDropdownToggle><b>Sort By</b></button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem (click)="sortMovies('release_date')">Release Date</button>
+        <button ngbDropdownItem (click)="sortMovies('movie_name')">Movie Name</button>
+        <button ngbDropdownItem (click)="sortMovies('created_date')">Upload Date</button>
+        <button ngbDropdownItem (click)="sortMovies('genre')">Genre</button>
+      </div>
+    </div>
+  </div>
+  <div class="div-add" *ngIf="!c.guest">
     <i class="fas fa-plus-circle" (click)="openUploadModal()"></i>
   </div>
   <div class="list-container">
     <div class="list-item" *ngFor="let m of movies">
       <div class="card-container">
         <div class="card-img pointer" (click)="showPlot(m)">
-          <img src="{{ m.poster_img ? m.poster_img : 'assets/default_movie.webp' }}" alt="" >
+          <img src="{{ m.poster_img ? (c.server+'filesystem/'+m.poster_img) : 'assets/default_movie.webp' }}" alt="" >
         </div>
         <div class="card-content">
           <div class="genre">{{ m.genre }}</div>
@@ -27,6 +41,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="div-page" *ngIf="collectionSize">
+      <ngb-pagination [collectionSize]="collectionSize" [pageSize]= "pageSize" [(page)]="page" aria-label="Default pagination" (pageChange)="pageChange($event)"></ngb-pagination>
     </div>
   </div>
 </div>

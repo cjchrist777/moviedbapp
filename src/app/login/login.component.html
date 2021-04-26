@@ -1,1 +1,21 @@
-<p>login works!</p>
+<div class="div-login-container">
+    <div class="div-form">
+        <div class="items">
+            <div class="username item">
+                <div class="label">Username</div>
+                <div class="input">
+                    <input type="text" [(ngModel)]="username">
+                </div>
+            </div>
+            <div class="password item">
+                <div class="label">Password</div>
+                <div class="input">
+                    <input type="password" [(ngModel)]="password">
+                </div>
+            </div>
+            <div class="div-btn">
+                <button class="btn-secondary" [disabled]="!isValid()" (click)="login()">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
