@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class CommonService {
   months: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  server: any = 'http://localhost:3000/';
+  server: any = 'https://moviedbnode.herokuapp.com/';
   guest: any;
   headeroptions: any = true;
   token: any = localStorage.token;
